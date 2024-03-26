@@ -138,9 +138,9 @@ class builtpassPrivate {
         // Set options.
         $options = [
             'once',
-            '90_days',
-            '180_days',
-            '365_days'
+            '90',
+            '180',
+            '365'
         ];
 
         // Filter.

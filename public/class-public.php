@@ -75,6 +75,11 @@ class builtpassPublic {
             // Load password reset template.
             $template = BUILTPASS_PATH . 'public/views/reset-password.php';
 
+        } elseif( is_user_logged_in() && isset( $_GET['reset-password-clear'] ) ) {
+
+            // Clear user meta for testing.
+            delete_user_meta( get_current_user_id(), '_builtpass_reset' );
+
         }
 
         // Return template.
@@ -99,9 +104,6 @@ class builtpassPublic {
 
         // Check if once and check if reset is needed.
         if( $type == 'once' && empty( get_user_meta( $user_id, '_builtpass_reset', true ) ) ) return true;
-
-        // Set days.
-        $days = str_replace( '_days', '', $type );
 
         // Check if within days.
         if( strtotime( get_user_meta( $user_id, '_builtpass_reset', true ) ) > strtotime( '-' . (float)$days . ' days' ) ) return true;

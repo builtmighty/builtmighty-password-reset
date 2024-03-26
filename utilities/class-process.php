@@ -129,27 +129,15 @@ class builtpassProcess {
      */
     public function save_password( $post ) {
 
-        // Global.
-        global $wpdb;
+        // Update the users password.
+        wp_set_password( $post['password'], $post['user_id'] );
 
-        // Hash password.
-        $hash = wp_hash_password( $post['password'] );
+        // Clear the user cache.
+        wp_cache_delete( $post['user_id'], 'users' );
 
-        // Set data.
-        error_log( 'Password: ' . print_r( $hash, true ) );
-        error_log( 'User: ' . print_r( $post['user_id'], true ) );
-
-        // Update user password.
-        $status = $wpdb->update( 
-            $wpdb->users,
-            [ 'user_pass' => $hash ], 
-            [ 'ID'        => $post['user_id'] ] 
-        );
-
-        // Get hashed user pass.
-        $user_pass = $wpdb->get_var( "SELECT user_pass FROM $wpdb->users WHERE ID = " . $post['user_id'] );
-
-        error_log( 'User Pass: ' . print_r( $user_pass, true ) );
+        // Re-authenticate the user programmatically.
+        wp_set_current_user( $post['user_id'] );
+        wp_set_auth_cookie( $post['user_id'] );
 
         // Update user meta.
         update_user_meta( $post['user_id'], '_builtpass_reset', date( 'Y-m-d-H-i-s' ) );
