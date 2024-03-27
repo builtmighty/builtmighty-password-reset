@@ -7,6 +7,17 @@
 class builtpassProcess {
 
     /**
+     * Process.
+     * 
+     * @since   1.0.0
+     */
+    public function process( $post, $data ) {
+
+        
+
+    }
+
+    /**
      * Check nonce.
      * 
      * Check if nonce is valid.

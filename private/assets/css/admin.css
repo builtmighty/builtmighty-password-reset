@@ -1,0 +1,165 @@
+.builtpass-form-inner {
+    padding: 30px;
+}
+
+.form-wrap.builtpass-form {
+    background: #1d2327;
+    margin-right: 20px;
+    border-radius: 4px;
+}
+
+.builtpass-form-inner h2, 
+.builtpass-form-inner h3 {
+    color: #fff;
+    margin-top: 0;
+}
+
+.builtpass-form-inner h2 {
+    font-size: clamp(22px,5vw,28px);
+}
+
+.builtpass-form-nav ul {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    margin-left: 5px;
+}
+
+.builtpass-form-nav ul li span {
+    background: none;
+    border: 1px solid #D4121F;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 15px;
+    margin: 0 5px 0 0;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+}
+
+.builtpass-form-nav ul li span.tab-active, 
+.builtpass-form-nav ul li span:hover {
+    background: #D4121F;
+}
+
+.builtpass-form-tabs {
+    background: #2c3338;
+    border-radius: 4px;
+}
+
+.builtpass-form-tabs > div {
+    padding: 30px;
+}
+
+.builtpass-form-tabs p {
+    color: rgb(255 255 255 / 80%);
+}
+
+.builtpass-form-tabs form {
+    margin: 15px 0 0;
+}
+
+.builtpass-field label {
+    min-width: 100px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.builtpass-field textarea {
+    width: calc(100% - 115px);
+    height: 100px !important;
+    margin-left: 15px;
+}
+
+.builtpass-field {
+    margin: 0 0 15px 0;
+    padding: 0 0 15px 0;
+    border-bottom: 1px solid rgb(255 255 255 / 10%);
+    color: #fff;
+}
+
+.builtpass-field.builtpass-field-submit {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+.builtpass-checkbox-field {
+    padding: 5px 10px;
+    background: #d4121f;
+    margin: 0 5px 0 0;
+    border-radius: 4px;
+}
+
+.wp-core-ui .builtpass-form-inner .button-primary,
+.wp-core-ui .builtpass-form-inner .button-primary:hover,
+.wp-core-ui .builtpass-form-inner .button-primary:focus {
+    background: #d4121f;
+    border-color: #d4121f;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+}
+
+.wp-core-ui .builtpass-form-inner .button-primary:hover {
+    transform: translateY(-3px);
+}
+
+.wp-core-ui .builtpass-form-inner .notice.is-dismissible {
+    border-left: none;
+    background: #00a32a;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.wp-core-ui .builtpass-form-inner .notice.is-dismissible p,
+.wp-core-ui .builtpass-form-inner .notice.is-dismissible button:before {
+    color: #fff;
+}
+
+.wp-core-ui .builtpass-form-inner .notice.is-dismissible button {
+    padding: 6px;
+}
+
+.builtpass-bulk-resets {
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.builtpass-bulk-reset {
+    display: grid;
+    grid: auto-flow dense / 1fr 1fr;
+    padding: 6px 6px;
+    border-bottom: 1px solid rgb(0 0 0 / 20%);
+}
+
+.builtpass-bulk-reset.builtpass-bulk-reset-head {
+    border-bottom: 2px solid #000;
+    font-weight: bold;
+}
+
+.builtpass-bulk-reset:last-child {
+    border-bottom: 0;
+}
+
+.wp-core-ui .button, 
+.wp-core-ui .button-secondary {
+    background: none;
+    color: #fff;
+    border-color: #fff;
+}
+
+.wp-core-ui .button-secondary:hover, 
+.wp-core-ui .button-secondary:focus {
+    background: #fff;
+    color: #000;
+}

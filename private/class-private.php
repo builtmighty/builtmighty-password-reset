@@ -63,48 +63,90 @@ class builtpassPrivate {
         if( ! is_user_logged_in() ) return;
 
         // Check user capability.
-        if( ! current_user_can( 'manage_options' ) ) {
-            return;
-        }
+        if( ! current_user_can( 'manage_options' ) ) return;
 
         // Settings. ?>
         <div class="form-wrap builtpass-form">
-            <h2>Password Reset</h2><?php
+            <div class="builtpass-form-inner">
+                <h2>🔑 Password Reset</h2><?php
 
-            // Save.
-            $this->save( $_POST ); ?>
+                // Save.
+                $this->save( $_POST ); ?>
 
-            <form method="post">
-                <div class="builtpass-field">
-                    <div class="builtpass-label">
-                        <label for="builtpass_reset_password">Reset Option</label>
-                    </div>
-                    <div class="builtpass-input">
-                        <select name="builtpass_reset_password" id="builtpass_reset_password">
-                            <option value="disable">Disabled</option><?php
+                <div class="builtpass-form-nav">
+                    <ul>
+                        <li><span class="builtpass-nav tab-active" data-id="timed">Timed Reset</span></li>
+                        <li><span class="builtpass-nav" data-id="bulk">Bulk Reset</span></li>
+                    </ul>
+                </div>
+                <div class="builtpass-form-tabs">
+                    <div id="timed" class="builtpass-form-tab">
+                        <h3>Timed Reset</h3>
+                        <p>Require users to update their passwords, automatically, after a defined period of time.</p>
+                        <form method="post"><?php
 
-                            // Loop through options.
-                            foreach( $this->get_options() as $option ) {
+                            // Loop through timed fields.
+                            foreach( $this->get_timed_fields() as $key => $field ) {
 
-                                // Prepend to option.
-                                $option = 'require_' . $option;
-
-                                // Set selected.
-                                $selected = ( get_option( 'builtpass_reset_password' ) == $option ) ? 'selected' : ''; ?>
-
-                                <option value="<?php echo $option; ?>" <?php echo $selected; ?>><?php echo ucwords( str_replace( '_', ' ', $option ) ); ?></option><?php
+                                // Output. 
+                                echo $this->get_field( $key, $field );
 
                             } ?>
 
-                        </select>
+                        </form>
+                    </div>
+                    <div id="bulk" class="builtpass-form-tab" style="display:none">
+                        <h3>Bulk Reset</h3>
+                        <p>Require users to update their passwords if they are a specific role. If a user attempts to login, they will be logged out and will receive a reset password link in their email.</p><?php
+
+                        // Check if reset is set.
+                        if( ! empty( get_option( 'builtpass_bulk_reset' ) ) ) {
+
+                            // Output. ?>
+                            <div class="builtpass-bulk-resets">
+                                <div class="builtpass-bulk-reset builtpass-bulk-reset-head">
+                                    <div class="builtpass-bulk-reset-role">
+                                        Role
+                                    </div>
+                                    <div class="builtpass-bulk-reset-time">
+                                        Required Reset After Login
+                                    </div>
+                                </div><?php
+
+                                // Loop.
+                                foreach( get_option( 'builtpass_bulk_reset' ) as $role => $time ) {
+
+                                    // Output. ?>
+                                    <div class="builtpass-bulk-reset">
+                                        <div class="builtpass-bulk-reset-role">
+                                            <?php echo ucwords( str_replace( '_', ' ', get_role( $role )->name ) ); ?>
+                                        </div>
+                                        <div class="builtpass-bulk-reset-time">
+                                            <?php echo date( 'F j, Y h:ia', $time ); ?>
+                                        </div>
+                                    </div><?php
+
+                                } ?>
+
+                            </div><?php
+
+                        } ?>
+                        <form method="post"><?php
+
+                            // Loop through bulk fields.
+                            foreach( $this->get_bulk_fields() as $key => $field ) {
+
+                                // Output. 
+                                echo $this->get_field( $key, $field );
+
+                            } ?>
+
+                        </form>
                     </div>
                 </div>
-                <div class="builtpass-field">
-                    <button type="submit" class="button button-primary">Save</button>
-                </div>
-            </form>
+            </div>
         </div>
-        <style>.builtpass-field{display:flex;align-items:center}.builtpass-label label{font-weight:700;margin-right:15px}.builtpass-field button[type=submit]{margin:15px 0 0}.wp-core-ui .notice.is-dismissible{margin:0 0 15px}</style><?php
+        <style>.builtpass-field{display:flex;align-items:center}.builtpass-label label{font-weight:700;margin-right:15px}.wp-core-ui .notice.is-dismissible{margin:0 0 15px}</style><?php
 
     }
 
@@ -116,38 +158,325 @@ class builtpassPrivate {
     public function save( $data ) {
 
         // Save.
-        if( ! empty( $data ) && isset( $data['builtpass_reset_password'] ) ) {
+        if( ! empty( $data ) ) {
 
-            // Update.
-            update_option( 'builtpass_reset_password', $data['builtpass_reset_password'] );
+            // Check save type.
+            if( isset( $data['builtpass_timed_save'] ) ) {
 
-            // Message.
-            echo '<div class="notice notice-success is-dismissible"><p>Settings saved.</p></div>';
+                // Loop through fields.
+                foreach( $this->get_timed_fields() as $key => $field ) {
+
+                    // Check if set.
+                    if( isset( $data[ $key ] ) ) {
+
+                        // Update.
+                        update_option( $key, $data[ $key ] );
+
+                    } else {
+
+                        // Delete.
+                        delete_option( $key );
+
+                    }
+
+                }
+
+                // Message.
+                echo '<div class="notice notice-success is-dismissible"><p>Timed reset settings saved.</p></div>';
+
+            } elseif( isset( $data['builtpass_bulk_save'] ) ) {
+
+                // Save textareas.
+                foreach( $this->get_bulk_fields() as $key => $field ) {
+
+                    // Check type.
+                    if( $field['type'] != 'textarea' ) continue;
+
+                    // Check if set.
+                    if( isset( $data[ $key ] ) ) {
+
+                        // Update.
+                        update_option( $key, $data[ $key ] );
+
+                    } else {
+
+                        // Delete.
+                        delete_option( $key );
+
+                    }
+
+                }
+
+                // Get/set save data.
+                $save_data = ( ! empty( get_option( 'builtpass_bulk_reset' ) ) ) ? get_option( 'builtpass_bulk_reset' ) : [];
+
+                // Loop through roles.
+                foreach( $data['builtpass_bulk_roles'] as $role ) {
+
+                    // Set.
+                    $save_data[$role] = time();
+
+                }
+
+                // Update.
+                update_option( 'builtpass_bulk_reset', $save_data );
+
+                // Message.
+                echo '<div class="notice notice-success is-dismissible"><p>Bulk reset settings saved.</p></div>';
+
+            } elseif( isset( $data['builtpass_bulk_clear'] ) ) {
+
+                // Delete.
+                delete_option( 'builtpass_bulk_reset' );
+
+                // Message.
+                echo '<div class="notice notice-success is-dismissible"><p>Bulk reset for roles cleared.</p></div>';
+
+            }
 
         }
 
     }
 
     /**
-     * Get options.
+     * Get field.
      * 
      * @since   1.0.0
      */
-    public function get_options() {
+    public function get_field( $key, $field ) {
 
-        // Set options.
-        $options = [
-            'once',
-            '90',
-            '180',
-            '365'
+        // Get value.
+        $value = get_option( $key );
+
+        // Start output buffering.
+        ob_start();
+
+        // Field. ?>
+        <div class="builtpass-field builtpass-field-<?php echo $field['type']; ?>"><?php
+
+            // Check for a label.
+            if( $field['type'] != 'submit' ) { ?>
+
+                <label for="<?php echo $key; ?>" class="builtpass-label">
+                    <?php echo $field['label']; ?>
+                </label><?php
+
+            }
+
+            // Select.
+            if( $field['type'] == 'select' ) {
+
+                // Output select. ?>
+                <select name="<?php echo $key; ?>" id="<?php echo $key; ?>"><?php
+
+                    // Loop through options.
+                    foreach( $field['options'] as $option_id => $option ) {
+
+                        // Set.
+                        $selected = ( $value == $option_id ) ? ' selected' : '';
+
+                        // Output option.
+                        echo '<option value="' . $option_id . '"' . $selected . '>' . $option . '</option>';
+
+                    } ?>
+
+                </select><?php
+
+            } elseif( $field['type'] == 'checkbox' ) {
+
+                // Check if options.
+                if( ! empty( $field['options'] ) ) {
+
+                    // Loop through options.
+                    foreach( $field['options'] as $option_id => $option ) {
+
+                        // Set.
+                        $checked = ( in_array( $option_id, (array)$value ) ) ? ' checked' : '';
+
+                        // Output checkbox.?> 
+                        <div class="builtpass-checkbox-field"><input type="checkbox" name="<?php echo $key; ?>[]" id="<?php echo $key; ?>-<?php echo $option_id; ?>" value="<?php echo $option_id; ?>"<?php echo $checked; ?> /><span><?php echo $option; ?></span></div><?php
+
+                    }
+
+                } else {
+
+                    // Output checkbox. ?>
+                    <input type="checkbox" name="<?php echo $key; ?>" id="<?php echo $key; ?>" value="1" <?php checked( $value, 1 ); ?> /><?php
+
+                }
+
+            } elseif( in_array( $field['type'], [ 'text', 'number', 'hidden', 'password' ] ) ) {
+
+                // Output input. ?>
+                <input type="<?php echo $field['type']; ?>" name="<?php echo $key; ?>" id="<?php echo $key; ?>" value="<?php echo $value; ?>" /><?php
+
+            } elseif( $field['type'] == 'textarea' ) {
+
+                // Output textarea. ?>
+                <textarea name="<?php echo $key; ?>" id="<?php echo $key; ?>"><?php echo $value; ?></textarea><?php
+            
+            } elseif( $field['type'] == 'submit' ) {
+
+                // Output class.
+                $class = ( isset( $field['class'] ) ) ? ' class="' . $field['class'] . '"' : '';
+
+                // Output submit. ?>
+                <button type="submit" name="<?php echo $key; ?>" <?php echo $class; ?>><?php echo $field['label']; ?></button><?php
+
+            } ?>
+
+        </div><?php
+
+        // Return.
+        return ob_get_clean();
+
+    }
+
+    /**
+     * Get timed fields.
+     * 
+     * @since   1.0.0
+     */
+    public function get_timed_fields() {
+
+        // Set fields.
+        $fields = [
+            'builtpass_timed_reset'     => [
+                'label'     => 'Reset',
+                'type'      => 'select',
+                'options'   => $this->get_times()
+            ],
+            'builtpass_timed_roles'     => [
+                'label'     => 'Roles',
+                'type'      => 'checkbox',
+                'options'   => $this->get_roles()
+            ],
+            'builtpass_timed_save'      => [
+                'label'     => 'Save',
+                'type'      => 'submit',
+                'class'     => 'button button-primary',
+            ]
         ];
 
         // Filter.
-        $options = apply_filters( 'builtpass_reset_options', $options );
+        $fields = apply_filters( 'builtpass_timed_fields', $fields );
+
+        // Return.
+        return $fields;
+
+    }
+
+    /**
+     * Get bulk fields.
+     * 
+     * @since   1.0.0
+     */
+    public function get_bulk_fields() {
+
+        // Set fields.
+        $fields = [
+            'builtpass_bulk_roles'     => [
+                'label'     => 'Roles',
+                'type'      => 'checkbox',
+                'options'   => $this->get_roles()
+            ],
+            'builtpass_bulk_page'      => [
+                'label'     => 'Page Content',
+                'type'      => 'textarea',
+            ],
+            'builtpass_bulk_email'     => [
+                'label'     => 'Email Content',
+                'type'      => 'textarea',
+            ],
+            'builtpass_bulk_save'      => [
+                'label'     => 'Save',
+                'type'      => 'submit',
+                'class'     => 'button button-primary',
+            ],
+            'builtpass_bulk_clear'      => [
+                'label'     => 'Clear Reset',
+                'type'      => 'submit',
+                'class'     => 'button button-secondary',
+            ],
+        ];
+
+        // Filter.
+        $fields = apply_filters( 'builtpass_bulk_fields', $fields );
+
+        // Return.
+        return $fields;
+
+    }
+
+    /**
+     * Get times.
+     * 
+     * @since   1.0.0
+     */
+    public function get_times() {
+
+        // Set times.
+        $times = [
+            'disabled'  => 'Disabled',
+            '90'        => 'Every 90 Days',
+            '180'       => 'Every 180 Days',
+            '365'       => 'Every Year',
+        ];
+
+        // Filter.
+        $times = apply_filters( 'builtpass_reset_times', $times );
+
+        // Return.
+        return $times;
+
+    }
+
+    /**
+     * Get user roles for the site.
+     * 
+     * @since   1.0.0
+     */
+    public function get_roles() {
+
+        // Get roles.
+        $roles = get_editable_roles();
+
+        // Set.
+        $options = [];
+
+        // Loop through roles.
+        foreach( $roles as $role => $details ) {
+
+            // Set.
+            $options[ $role ] = ucwords( $details['name'] );
+
+        }
+
+        // Remove admin.
+        unset( $options['administrator'] );
 
         // Return.
         return $options;
+
+    }
+
+    /**
+     * Enqueue.
+     * 
+     * @since   1.0.0
+     */
+    public function enqueue() {
+
+        // Load on admin.
+        if( $_GET['page'] == 'builtpass-password-reset' ) {
+
+            // CSS.
+            wp_enqueue_style( 'builtpass-admin', BUILTPASS_URI . 'private/assets/css/admin.css', [], BUILTPASS_VERSION );
+
+            // JS.
+            wp_enqueue_script( 'builtpass-admin', BUILTPASS_URI . 'private/assets/js/admin.js', [ 'jquery' ], BUILTPASS_VERSION, true );
+
+        }
 
     }
 

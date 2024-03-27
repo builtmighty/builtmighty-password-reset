@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Built Mighty Password Reset
+Plugin Name: 🔑 Built Mighty Password Reset
 Plugin URI: https://builtmighty.com
-Description: Require users to reset their password on login.
+Description: Require users to reset their password on login or set a bulk reset for a specific user role.
 Version: 1.0.0
 Author: Built Mighty
 Author URI: https://builtmighty.com
@@ -30,7 +30,7 @@ if( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', 
  * 
  * @since   1.0.0
  */
-define( 'BUILTPASS_VERSION', '0.0.1' );
+define( 'BUILTPASS_VERSION', date( 'YmdHis' ) );
 define( 'BUILTPASS_NAME', 'built-password-reset' );
 define( 'BUILTPASS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'BUILTPASS_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
@@ -84,3 +84,15 @@ function run_builtpass_plugin() {
 
 }
 run_builtpass_plugin();
+
+/**
+ * Reset notice.
+ * 
+ * @since   1.0.0
+ */
+add_action( 'builtpass_reset_notice', 'builtpass_test_code' );
+function builtpass_test_code( $user_id ) {
+
+    echo 'Hello there ' . $user_id . '.';
+
+}

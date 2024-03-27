@@ -70,6 +70,8 @@ class builtpassPlugin {
 
         // Utilities.
         require_once BUILTPASS_PATH . 'utilities/class-process.php';
+        require_once BUILTPASS_PATH . 'utilities/class-mail.php';
+        require_once BUILTPASS_PATH . 'utilities/class-keys.php';
 
         // Private.
         require_once BUILTPASS_PATH . 'private/class-private.php';
@@ -92,6 +94,7 @@ class builtpassPlugin {
 
         // Add actions.
         $this->loader->add_action( 'admin_menu', $private, 'add_menu_page' );
+        $this->loader->add_action( 'admin_enqueue_scripts', $private, 'enqueue' );
 
     }
 
@@ -104,7 +107,9 @@ class builtpassPlugin {
         $public = new builtpassPublic( $this->get_name(), $this->get_version() );
 
         // Add actions.
-        $this->loader->add_action( 'init', $public, 'redirect_reset_pass' );
+        $this->loader->add_action( 'user_register', $public, 'set_key', 10, 1 );
+        $this->loader->add_action( 'wp_login', $public, 'login_reset', 10, 2 );
+        $this->loader->add_action( 'init', $public, 'redirect_timed_reset' );
         $this->loader->add_action( 'wp_logout', $public, 'logout' );
 
         // Add filters.
