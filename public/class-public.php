@@ -105,8 +105,14 @@ class builtpassPublic {
         // Check if once and check if reset is needed.
         if( $type == 'once' && empty( get_user_meta( $user_id, '_builtpass_reset', true ) ) ) return true;
 
+        // Check if user meta is empty.
+        if( empty( get_user_meta( $user_id, '_builtpass_reset', true ) ) ) return true;
+
+        // Get user meta date.
+        $date = strtotime( '+' . $type . ' days', get_user_meta( $user_id, '_builtpass_reset', true ) );
+
         // Check if within days.
-        if( strtotime( get_user_meta( $user_id, '_builtpass_reset', true ) ) > strtotime( '-' . (float)$days . ' days' ) ) return true;
+        if( $date <= time() ) return true;
 
         // Return false.
         return false;

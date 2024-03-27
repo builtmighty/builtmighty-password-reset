@@ -140,7 +140,7 @@ class builtpassProcess {
         wp_set_auth_cookie( $post['user_id'] );
 
         // Update user meta.
-        update_user_meta( $post['user_id'], '_builtpass_reset', date( 'Y-m-d-H-i-s' ) );
+        update_user_meta( $post['user_id'], '_builtpass_reset', time() );
 
     }
 
