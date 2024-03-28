@@ -72,6 +72,7 @@ class builtpassPlugin {
         require_once BUILTPASS_PATH . 'utilities/class-process.php';
         require_once BUILTPASS_PATH . 'utilities/class-mail.php';
         require_once BUILTPASS_PATH . 'utilities/class-keys.php';
+        require_once BUILTPASS_PATH . 'utilities/class-helper.php';
 
         // Private.
         require_once BUILTPASS_PATH . 'private/class-private.php';
