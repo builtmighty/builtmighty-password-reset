@@ -84,15 +84,3 @@ function run_builtpass_plugin() {
 
 }
 run_builtpass_plugin();
-
-/**
- * Reset notice.
- * 
- * @since   1.0.0
- */
-add_action( 'builtpass_reset_notice', 'builtpass_test_code' );
-function builtpass_test_code( $user_id ) {
-
-    echo 'Hello there ' . $user_id . '.';
-
-}
