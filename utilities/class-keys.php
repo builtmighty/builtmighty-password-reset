@@ -77,6 +77,15 @@ class builtpassKeys {
         // Get user key.
         $user_key = $this->decrypt( $this->get_key( $user_id ) );
 
+        // Check if key expired within 24 hours.
+        if( $user_key[1] < strtotime( '-1 day' ) ) {
+
+            // Remove key.
+            $this->expire( $user_id );
+            return false;
+
+        }
+
         // Compare keys.
         if( $user_key[0] !== $post_key[0] ) return false;
 
