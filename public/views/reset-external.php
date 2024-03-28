@@ -26,47 +26,8 @@ if( ! $access ) {
 
 }
 
-// Set data.
-$data = [
-    'message'   => '',
-    'redirect'  => true
-];
-
-// Reset.
-if( isset( $_POST['action'] ) && $_POST['action'] == 'builtpass_reset_password' ) {
-
-    // Check nonce.
-    $data = $process->check_nonce( $_POST, $data );
-    
-    // Check match.
-    $data = $process->check_match( $_POST, $data );
-
-    // Check strength.
-    $data = $process->check_strength( $_POST, $data );
-
-    // Check for message.
-    if( ! empty( $data['message'] ) ) {
-
-        // Display message.
-        echo '<div class="builtpass-error">' . $data['message'] . '</div>';
-
-    } else {
-
-        // Save password.
-        $process->save_password( $_POST );
-
-    }
-
-    // Check for redirect.
-    if( $data['redirect'] ) {
-
-        // Redirect.
-        wp_redirect( home_url( '/my-account' ) );
-        exit;
-
-    }
-    
-}
+// Process.
+$process->run( $_POST, [ 'message' => '', 'redirect' => true ] );
 
 // Header.
 get_header();

@@ -114,17 +114,17 @@ class builtpassPublic {
         if( is_user_logged_in() && isset( $_GET['reset-password'] ) ) {
 
             // Load password reset template.
-            $template = BUILTPASS_PATH . 'public/views/reset-password.php';
+            $template = BUILTPASS_PATH . 'public/views/reset-internal.php';
 
         } elseif( ! is_user_logged_in() && isset( $_GET['reset-password'] ) && isset( $_GET['key'] ) ) {
 
             // Load password reset template.
-            $template = BUILTPASS_PATH . 'public/views/reset-password-link.php';
+            $template = BUILTPASS_PATH . 'public/views/reset-external.php';
 
         } elseif( ! is_user_logged_in() && isset( $_GET['password-reset-required'] ) ) {
 
             // Load password reset notice template.
-            $template = BUILTPASS_PATH . 'public/views/reset-password-notice.php';
+            $template = BUILTPASS_PATH . 'public/views/reset-notice.php';
 
         } elseif( is_user_logged_in() && isset( $_GET['reset-password-clear'] ) ) {
 
