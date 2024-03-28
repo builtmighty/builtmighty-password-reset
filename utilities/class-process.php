@@ -7,13 +7,45 @@
 class builtpassProcess {
 
     /**
-     * Process.
+     * Run.
      * 
      * @since   1.0.0
      */
-    public function process( $post, $data ) {
+    public function run( $post, $data ) {
 
+        // Check if set. 
+        if( ! isset( $post['action'] ) || $post['action'] !== 'builtpass_reset_password' ) return; 
+
+        // Check nonce.
+        $data = $this->check_nonce( $post, $data );
         
+        // Check match.
+        $data = $this->check_match( $post, $data );
+
+        // Check strength.
+        $data = $this->check_strength( $post, $data );
+
+        // Check for message.
+        if( ! empty( $data['message'] ) ) {
+
+            // Display message.
+            echo '<div class="builtpass-error">' . $data['message'] . '</div>';
+
+        } else {
+
+            // Save password.
+            $this->save_password( $post );
+
+        }
+
+        // Check for redirect.
+        if( $data['redirect'] ) {
+
+            // Redirect.
+            wp_redirect( home_url( '/my-account' ) );
+            exit;
+
+        }
 
     }
 
