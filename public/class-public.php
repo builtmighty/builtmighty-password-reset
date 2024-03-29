@@ -113,12 +113,12 @@ class builtpassPublic {
         // Check if password reset is requested.
         if( is_user_logged_in() && isset( $_GET['reset-password'] ) ) {
 
-            // Load password reset template.
+            // Load password reset internal template.
             $template = BUILTPASS_PATH . 'public/views/reset-internal.php';
 
         } elseif( ! is_user_logged_in() && isset( $_GET['reset-password'] ) && isset( $_GET['key'] ) ) {
 
-            // Load password reset template.
+            // Load password reset external template.
             $template = BUILTPASS_PATH . 'public/views/reset-external.php';
 
         } elseif( ! is_user_logged_in() && isset( $_GET['password-reset-required'] ) ) {
@@ -126,6 +126,11 @@ class builtpassPublic {
             // Load password reset notice template.
             $template = BUILTPASS_PATH . 'public/views/reset-notice.php';
 
+        } elseif( ! is_user_logged_in() && isset( $_GET['password-reset-expired'] ) ) {
+
+            // Load password reset expired template.
+            $template = BUILTPASS_PATH . 'public/views/reset-expired.php';
+            
         } elseif( is_user_logged_in() && isset( $_GET['reset-password-clear'] ) ) {
 
             // Set user ID.

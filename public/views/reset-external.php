@@ -21,7 +21,7 @@ if( ! $keys->validate( $_GET['key'], $_GET['user'] ) ) $access = false;
 if( ! $access ) {
 
     // Redirect.
-    wp_redirect( home_url() );
+    wp_redirect( home_url( '/?password-reset-expired=true&user=' . $_GET['user'] ) );
     exit;
 
 }
