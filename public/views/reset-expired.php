@@ -5,6 +5,10 @@
  * @since   1.0.0
  */
 
+// Classes.
+$helper     = new builtpassHelper();
+$process    = new builtpassProcess();
+
 // Check if user is set 
 if( ! isset( $_GET['user'] ) ) {
     
@@ -26,15 +30,15 @@ if( ! $user ) {
 
 }
 
+// Process.
+$process->reset( $_POST, [ 'message' => '', 'redirect' => true ] );
+
 // Header.
 get_header();
 
-// Helper.
-$helper = new builtpassHelper();
-
 // Reset message. ?>
 <div class="builtpass-expired-info">
-    <p>It appears your reset token has expired. Request a new one and have it sent to <?php echo $helper->mask_email( $user->user_email ); ?>?</p>
+    <p>It appears your reset link has expired. Request a new one and have it sent to <?php echo $helper->mask_email( $user->user_email ); ?>?</p>
 </div>
 <form id="built-password-reset-expired" method="post">
     <input type="hidden" name="action" value="builtpass_reset_expired">
