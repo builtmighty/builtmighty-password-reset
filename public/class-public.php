@@ -61,12 +61,14 @@ class builtpassPublic {
         // Logout the user.
         wp_logout();
 
+        // Mail.
+        $mail = new builtpassMail();
+        $mail->password_reset_email( $user );
+
         // Redirect.
         wp_redirect( site_url( '/?password-reset-required=true&user=' . $user->ID ) );
 
-        // Send password reset email.
-        $this->password_reset_email( $user );
-
+        // Execute Order 66.
         exit;
 
     }
@@ -111,7 +113,7 @@ class builtpassPublic {
     public function reset_password_template( $template ) {
 
         // Check if password reset is requested.
-        if( is_user_logged_in() && isset( $_GET['reset-password'] ) ) {
+        if( is_user_logged_in() && isset( $_GET['reset-password'] ) && ! isset( $_GET['key'] ) ) {
 
             // Load password reset internal template.
             $template = BUILTPASS_PATH . 'public/views/reset-internal.php';
