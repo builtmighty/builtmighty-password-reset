@@ -36,6 +36,9 @@ $process->reset( $_POST, [ 'message' => '', 'redirect' => true ] );
 // Header.
 get_header();
 
+// Before expired.
+do_action( 'builtpass_before_expired', $user->ID );
+
 // Reset message. ?>
 <div class="builtpass-expired-info">
     <p>It appears your reset link has expired. Request a new one and have it sent to <?php echo $helper->mask_email( $user->user_email ); ?>?</p>
@@ -48,6 +51,9 @@ get_header();
     <input type="email" name="email" placeholder="Email">
     <button type="submit">Send Request</button>
 </form><?php
+
+// After expired.
+do_action( 'builtpass_after_expired', $user->ID );
 
 // Footer.
 get_footer();

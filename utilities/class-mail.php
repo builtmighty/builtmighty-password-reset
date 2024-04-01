@@ -73,6 +73,12 @@ class builtpassMail {
         $body       .= "<a href=\"" . site_url( '/?reset-password=true&key=' . $key . '&user=' . $user->ID ) . "\">Reset Password</a>";
         $body       .= "\n\nThank you!\n\nSincerely,\n" . get_bloginfo( 'name' ) . "\n\n";
 
+        // Filters.
+        $email      = apply_filters( 'builtpass_password_reset_email', $email, $user );
+        $subject    = apply_filters( 'builtpass_password_reset_subject', $subject, $user );
+        $heading    = apply_filters( 'builtpass_password_reset_heading', $heading, $user );
+        $body       = apply_filters( 'builtpass_password_reset_body', $body, $user );
+
         // Compose.
         $mail->send( $email, $subject, $heading, $body );
 

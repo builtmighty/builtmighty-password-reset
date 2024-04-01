@@ -29,8 +29,8 @@ if( ! $user ) {
 // Header.
 get_header();
 
-// Wrapper start.
-do_action( 'builtpass_notice_start' );
+// Before notice.
+do_action( 'builtpass_before_notice', $_GET['user'] );
 
 // Helper.
 $helper = new builtpassHelper();
@@ -54,7 +54,7 @@ if( ! empty( get_option( 'builtpass_bulk_page' ) ) ) {
 do_action( 'builtpass_reset_notice', $_GET['user'] );
 
 // Wrapper end.
-do_action( 'builtpass_notice_end' );
+do_action( 'builtpass_after_notice', $_GET['user'] );
 
 // Footer.
 get_footer();

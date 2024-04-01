@@ -7,6 +7,7 @@
 // Classes.
 $process = new builtpassProcess();
 $keys    = new builtpassKeys();
+$help    = new builtpassHelper();
 
 // Access.
 $access = true;
@@ -15,7 +16,7 @@ $access = true;
 if( is_user_logged_in() ) {
 
     // Redirect.
-    wp_redirect( home_url( '/my-account' ) );
+    wp_redirect( $help->redirect_url() );
     exit;
 
 }
@@ -41,6 +42,9 @@ $process->run( $_POST, [ 'message' => '', 'redirect' => true ] );
 // Header.
 get_header();
 
+// Before external.
+do_action( 'builtpass_before_external', $_GET['user'] );
+
 // Reset form. ?>
 <div class="woocommerce-form woocommerce-form-reset reset">
     <div class="built-password-reset">
@@ -54,5 +58,8 @@ get_header();
         </form>
     </div>
 </div><?php
+
+// After external.
+do_action( 'builtpass_after_external', $_GET['user'] );
 
 get_footer();

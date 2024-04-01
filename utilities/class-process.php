@@ -16,6 +16,9 @@ class builtpassProcess {
         // Check if set. 
         if( ! isset( $post['action'] ) || $post['action'] !== 'builtpass_reset_password' ) return;
 
+        // Help.
+        $help = new builtpassHelper();
+
         // Check nonce.
         $data = $this->check_nonce( $post, $data );
 
@@ -45,7 +48,7 @@ class builtpassProcess {
         if( $data['redirect'] ) {
 
             // Redirect.
-            wp_redirect( home_url( '/my-account' ) );
+            wp_redirect( $help->redirect_url() );
             exit;
 
         }

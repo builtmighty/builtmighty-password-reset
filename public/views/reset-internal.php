@@ -10,6 +10,9 @@ get_header();
 $process = new builtpassProcess();
 $process->run( $post, [ 'message' => '', 'redirect' => true ] );
 
+// Before internal.
+do_action( 'builtpass_before_internal', get_current_user_id() );
+
 // Reset form. ?>
 <div class="woocommerce-form woocommerce-form-reset reset">
     <div class="built-password-reset">
@@ -23,5 +26,8 @@ $process->run( $post, [ 'message' => '', 'redirect' => true ] );
         </form>
     </div>
 </div><?php
+
+// After internal.
+do_action( 'builtpass_after_internal', get_current_user_id() );
 
 get_footer();

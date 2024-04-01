@@ -59,4 +59,16 @@ class builtpassHelper {
 
     }
 
+    /**
+     * Redirect URL.
+     * 
+     * Redirect to a URL.
+     */
+    public function redirect_url() {
+
+        // Check if WooCommerce is active.
+        return ( class_exists( 'WooCommerce' ) ) ? get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) : home_url();
+
+    }
+
 }
