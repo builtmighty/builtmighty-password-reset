@@ -47,4 +47,35 @@ class builtpassMail {
 
     }
 
+    /**
+     * Compose password reset email.
+     * 
+     * @since   1.0.0
+     */
+    public function password_reset_email( $user ) {
+
+        // Classes.
+        $mail = new builtpassMail();
+        $keys = new builtpassKeys();
+
+        // Create a key.
+        $key = $keys->create_user_key( $user->ID );
+
+        // Set email.
+        $email      = $user->user_email;
+        $subject    = get_bloginfo( 'name' ) . ' | Password Reset Required';
+        $heading    = 'Reset password.';
+        $body       = "Hello, " . $user->display_name . ",\n\n";
+
+        // Get email content.
+        $body       .= ( ! empty( get_option( 'builtpass_bulk_email' ) ) ) ? get_option( 'builtpass_bulk_email' ) : '';
+        $body       .= "In order to keep your account safe, you'll need to reset your password. Please reset your password by clicking the link below.\n\n";
+        $body       .= "<a href=\"" . site_url( '/?reset-password=true&key=' . $key . '&user=' . $user->ID ) . "\">Reset Password</a>";
+        $body       .= "\n\nThank you!\n\nSincerely,\n" . get_bloginfo( 'name' ) . "\n\n";
+
+        // Compose.
+        $mail->send( $email, $subject, $heading, $body );
+
+    }
+
 }
