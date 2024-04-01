@@ -53,6 +53,64 @@ class builtpassProcess {
     }
 
     /**
+     * Reset.
+     * 
+     * @since   1.0.0
+     */
+    public function reset( $post, $data ) {
+
+        // Check if set. 
+        if( ! isset( $post['action'] ) || $post['action'] !== 'builtpass_reset_expired' ) return;
+
+        // Check nonce.
+        if( ! wp_verify_nonce( $post['nonce'], 'builtpass_reset_expired' ) ) {
+
+            // Update.
+            $data['message'] = 'There was an error resetting password.';
+
+            // Redirect.
+            $data['redirect'] = false;
+
+        }
+
+        // Sanitize.
+        $post = $this->sanitize( $post );
+
+        // Check email.
+        if( ! $this->check_email( $post['email'], $post['user_id'] ) ) {
+
+            // Update.
+            $data['message'] = 'The email address is incorrect.';
+
+            // Redirect.
+            $data['redirect'] = false;
+
+        }
+
+        // Check for message.
+        if( ! empty( $data['message'] ) ) {
+
+            // Display message.
+            echo '<div class="builtpass-error">' . $data['message'] . '</div>';
+
+        } else {
+
+            // Get user.
+            $user = get_user_by( 'id', $post['user_id'] );
+
+            // Mail.
+            $mail = new builtpassMail();
+            $mail->password_reset_email( $user );
+
+            // Redirect.
+            wp_redirect( site_url( '/?password-reset-required=true&user=' . $user->ID ) );
+            exit;
+
+        }
+
+    }
+
+    /**
      * Check nonce.
      * 
      * Check if nonce is valid.
@@ -82,7 +140,7 @@ class builtpassProcess {
      * 
      * @since   1.0.0
      */
-    public function sanitize( $post, $data ) {
+    public function sanitize( $post ) {
 
         // Sanitize post.
         foreach( $post as $key => $value ) {
@@ -189,11 +247,43 @@ class builtpassProcess {
     }
 
     /**
+     * Check email.
+     * 
+     * @since   1.0.0
+     */
+    public function check_email( $email, $user_id ) {
+
+        // Get user.
+        $user = get_user_by( 'id', $user_id );
+
+        // Check if email matches user email.
+        if( $email != $user->user_email ) {
+
+            // Return false.
+            return false;
+
+        }
+
+        // Return true.
+        return true;
+        
+    }
+
+    /**
      * Save password.
      * 
      * @since   1.0.0
      */
     public function save_password( $post ) {
+
+        // Keys.
+        $keys = new builtpassKeys();
+
+        // Update user meta.
+        update_user_meta( $post['user_id'], '_builtpass_reset', time() );
+
+        // Expire key.
+        $keys->expire( $post['user_id'] );
 
         // Update the users password.
         wp_set_password( $post['password'], $post['user_id'] );
@@ -204,9 +294,6 @@ class builtpassProcess {
         // Re-authenticate the user programmatically.
         wp_set_current_user( $post['user_id'] );
         wp_set_auth_cookie( $post['user_id'] );
-
-        // Update user meta.
-        update_user_meta( $post['user_id'], '_builtpass_reset', time() );
 
     }
 
