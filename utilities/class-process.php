@@ -14,10 +14,13 @@ class builtpassProcess {
     public function run( $post, $data ) {
 
         // Check if set. 
-        if( ! isset( $post['action'] ) || $post['action'] !== 'builtpass_reset_password' ) return; 
+        if( ! isset( $post['action'] ) || $post['action'] !== 'builtpass_reset_password' ) return;
 
         // Check nonce.
         $data = $this->check_nonce( $post, $data );
+
+        // Sanitize.
+        $post = $this->sanitize( $post );
         
         // Check match.
         $data = $this->check_match( $post, $data );
@@ -71,6 +74,26 @@ class builtpassProcess {
 
         // Return data.
         return $data;
+
+    }
+
+    /**
+     * Sanitize.
+     * 
+     * @since   1.0.0
+     */
+    public function sanitize( $post, $data ) {
+
+        // Sanitize post.
+        foreach( $post as $key => $value ) {
+
+            // Sanitize.
+            $post[$key] = sanitize_text_field( $value );
+
+        }
+
+        // Return post.
+        return $post;
 
     }
 
