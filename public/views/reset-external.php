@@ -11,6 +11,15 @@ $keys    = new builtpassKeys();
 // Access.
 $access = true;
 
+// Check if user is logged in.
+if( is_user_logged_in() ) {
+
+    // Redirect.
+    wp_redirect( home_url( '/my-account' ) );
+    exit;
+
+}
+
 // Check for required key and user.
 if( ! isset( $_GET['key'] ) || ! isset( $_GET['user'] ) ) $access = false;
 
