@@ -54,7 +54,7 @@ function custom_builtpass_reset_times( $times ) {
 ```
 
 ### Bulk Reset + Timed Fields
-This is an admin setting field where you can filer the available fields.
+This is an admin setting field where you can filter the available fields.
 
 ```
 add_filter( 'builtpass_bulk_fields', 'custom_builtpass_bulk_fields', 10, 1 );
