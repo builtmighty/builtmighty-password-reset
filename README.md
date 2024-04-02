@@ -12,15 +12,32 @@ The plugin comes with several actions and filters for you to modify specific pie
 ### Actions
 These are the following actions that are available. All of these actions include the user ID.
 
-* `builtpass_before_notice` - An action that runs before the password reset notice page content. Shown to bulk reset users.
-* `builtpass_reset_notice` - An action that runs within the content of the password reset notice page. Shown to bulk reset users.
-* `builtpass_after_notice` - An action that runs after the password reset notice page content. Shown to bulk reset users.
-* `builtpass_before_external` - An action that runs before the external password reset form. Shown to bulk reset users.
-* `builtpass_after_external` - An action that runs before the external password reset form. Shown to bulk reset users.
-* `builtpass_before_internal` - An action that runs before the internal password reset form. Shown to timed reset users.
-* `builtpass_after_internal` - An action that runs after the internal password reset form. Shown to timed reset users.
-* `builtpass_before_expired` - An action that runs before the expired password request form. Shown to bulk reset users.
-* `builtpass_after_expired` - An action that runs after the expired password request form. Shown to bulk reset users.
+`builtpass_before_notice`
+An action that runs before the password reset notice page content. Shown to bulk reset users.
+
+`builtpass_reset_notice`
+An action that runs within the content of the password reset notice page. Shown to bulk reset users.
+
+`builtpass_after_notice`
+An action that runs after the password reset notice page content. Shown to bulk reset users.
+
+`builtpass_before_external`
+An action that runs before the external password reset form. Shown to bulk reset users.
+
+`builtpass_after_external`
+An action that runs before the external password reset form. Shown to bulk reset users.
+
+`builtpass_before_internal`
+An action that runs before the internal password reset form. Shown to timed reset users.
+
+`builtpass_after_internal`
+An action that runs after the internal password reset form. Shown to timed reset users.
+
+`builtpass_before_expired`
+An action that runs before the expired password request form. Shown to bulk reset users.
+
+`builtpass_after_expired`
+An action that runs after the expired password request form. Shown to bulk reset users.
 
 Example:
 ```
@@ -110,6 +127,7 @@ function custom_builtpass_password_reset_body( $body, $user_id ) {
     // Filter the body, with access to the user ID.
 
 }
+```
 
 ## 1.0.0
 
