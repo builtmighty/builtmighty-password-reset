@@ -66,7 +66,50 @@ function custom_builtpass_bulk_fields( $fields ) {
 ```
 
 ### Mail Filters
-There are filters for different pieces of mail.
+There's one email sent out to users, which generates a one-time use link for resetting their password. There are filters available for each piece of the email.
+
+`builtpass_password_reset_email`
+
+```
+add_filter( 'builtpass_password_reset_email', 'custom_builtpass_password_reset_email', 10, 2 );
+function custom_builtpass_password_reset_email( $email_address, $user_id ) {
+
+    // Filter the email address, with access to the user ID.
+
+}
+```
+
+`builtpass_password_reset_subject`
+
+```
+add_filter( 'builtpass_password_reset_subject', 'custom_builtpass_password_reset_subject', 10, 2 );
+function custom_builtpass_password_reset_subject( $subject, $user_id ) {
+
+    // Filter the subject, with access to the user ID.
+
+}
+```
+
+`builtpass_password_reset_heading`
+
+```
+add_filter( 'builtpass_password_reset_heading', 'custom_builtpass_password_reset_heading', 10, 2 );
+function custom_builtpass_password_reset_heading( $heading, $user_id ) {
+
+    // Filter the heading, with access to the user ID.
+
+}
+```
+
+`builtpass_password_reset_body`
+
+```
+add_filter( 'builtpass_password_reset_body', 'custom_builtpass_password_reset_body', 10, 2 );
+function custom_builtpass_password_reset_body( $body, $user_id ) {
+
+    // Filter the body, with access to the user ID.
+
+}
 
 ## 1.0.0
 
