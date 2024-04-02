@@ -84,3 +84,17 @@ function run_builtpass_plugin() {
 
 }
 run_builtpass_plugin();
+
+/**
+ * Plugin Updates. 
+ * 
+ * @since   1.0.0
+ */
+require BUILTPASS_PATH . 'updates/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+$updates = PucFactory::buildUpdateChecker(
+	'https://github.com/builtmighty/builtmighty-password-reset',
+	__FILE__,
+	'builtmighty-password-reset'
+);
+$updates->setBranch( 'main' );
