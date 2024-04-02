@@ -74,10 +74,10 @@ class builtpassMail {
         $body       .= "\n\nThank you!\n\nSincerely,\n" . get_bloginfo( 'name' ) . "\n\n";
 
         // Filters.
-        $email      = apply_filters( 'builtpass_password_reset_email', $email, $user );
-        $subject    = apply_filters( 'builtpass_password_reset_subject', $subject, $user );
-        $heading    = apply_filters( 'builtpass_password_reset_heading', $heading, $user );
-        $body       = apply_filters( 'builtpass_password_reset_body', $body, $user );
+        $email      = apply_filters( 'builtpass_password_reset_email', $email, $user->ID );
+        $subject    = apply_filters( 'builtpass_password_reset_subject', $subject, $user->ID );
+        $heading    = apply_filters( 'builtpass_password_reset_heading', $heading, $user->ID );
+        $body       = apply_filters( 'builtpass_password_reset_body', $body, $user->ID );
 
         // Compose.
         $mail->send( $email, $subject, $heading, $body );
