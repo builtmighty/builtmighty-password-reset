@@ -111,7 +111,21 @@ class builtpassPrivate {
                                     <div class="builtpass-bulk-reset-time">
                                         Required Reset After Login
                                     </div>
-                                </div><?php
+                                    <?php
+                                    $interval_option = get_option( 'builtpass_bulk_exclusion_interval', 'none' );
+                                    if ( $interval_option !== 'none') :
+                                        ?>
+                                        <div class="builtpass-bulk-exlusion-interval">
+                                            Unless Registered After
+                                        </div>
+                                        <?php
+
+                                        
+
+                                    endif;
+                                    ?>
+                                </div>
+                                <?php
 
                                 // Loop.
                                 foreach( get_option( 'builtpass_bulk_reset' ) as $role => $time ) {
@@ -124,6 +138,22 @@ class builtpassPrivate {
                                         <div class="builtpass-bulk-reset-time">
                                             <?php echo date( 'F j, Y h:ia', $time ); ?>
                                         </div>
+                                        <?php
+                                        if ( $interval_option !== 'none') :
+                                            $converted_interval = builtpassHelper::convert_interval_to_datetime( $interval_option );
+
+                                            // Subtract the interval from the current time.
+                                            $cutoff_time = strtotime( '-' . str_replace('_', ' ', $interval_option), $time );
+
+                                            // Format the cutoff time.
+                                            $formatted_cutoff_time = date( 'F j, Y h:ia', $cutoff_time );
+                                            ?>
+                                            <div class="builtpass-bulk-exlusion-interval">
+                                                <?php echo $formatted_cutoff_time; ?>
+                                            </div>
+                                            <?php
+                                        endif; // endif ( $interval_option !== 'none') :
+                                        ?>
                                     </div><?php
 
                                 } ?>
@@ -146,7 +176,7 @@ class builtpassPrivate {
                 </div>
             </div>
         </div>
-        <style>.builtpass-field{display:flex;align-items:center}.builtpass-label label{font-weight:700;margin-right:15px}.wp-core-ui .notice.is-dismissible{margin:0 0 15px}</style><?php
+        <style>.builtpass-field{display:flex;align-items:center;gap:1em;flex-wrap:wrap;}.builtpass-label label{font-weight:700;margin-right:15px}.wp-core-ui .notice.is-dismissible{margin:0 0 15px}</style><?php
 
     }
 
@@ -233,6 +263,10 @@ class builtpassPrivate {
                 echo '<div class="notice notice-success is-dismissible"><p>Bulk reset for roles cleared.</p></div>';
 
             }
+
+            // Save exclusion interval.
+            if ( isset( $data['builtpass_bulk_exclusion_interval'] ) )
+                update_option( 'builtpass_bulk_exclusion_interval', sanitize_text_field( $data['builtpass_bulk_exclusion_interval'] ) );
 
         }
 
@@ -323,7 +357,17 @@ class builtpassPrivate {
                 // Output submit. ?>
                 <button type="submit" name="<?php echo $key; ?>" <?php echo $class; ?>><?php echo $field['label']; ?></button><?php
 
-            } ?>
+            }
+            
+            // Check for a description.
+            if( isset( $field['description'] ) ) :
+                ?>
+                <p class="description">
+                    <?php echo $field['description']; ?>
+                </p>
+                <?php
+            endif;
+            ?>
 
         </div><?php
 
@@ -375,6 +419,12 @@ class builtpassPrivate {
 
         // Set fields.
         $fields = [
+            'builtpass_bulk_exclusion_interval' => [
+                'label'       => __( 'Exclusion Interval', BUILTPASS_DOMAIN ),
+                'description' => __( 'If a user has reset their password within this interval, they will not be required to reset their password again.', BUILTPASS_DOMAIN ),
+                'type'        => 'select',
+                'options'     => $this->get_exclusion_intervals()
+            ],
             'builtpass_bulk_roles'     => [
                 'label'     => 'Roles',
                 'type'      => 'checkbox',
@@ -406,6 +456,35 @@ class builtpassPrivate {
         // Return.
         return $fields;
 
+    }
+
+
+    /**
+     * Get exclusion intervals.
+     * 
+     * @return  array - The exclusion intervals.
+     * 
+     * @since   1.1.0
+     */
+    public function get_exclusion_intervals() {
+
+        // Set intervals.
+        $intervals = [
+            'none'      => __( 'None', BUILTPASS_DOMAIN ),
+            '6_months'  => __( '6 Months', BUILTPASS_DOMAIN ),
+            '1_year'    => __( '1 Year', BUILTPASS_DOMAIN ),
+        ];
+
+        /**
+         * Filter the exclusion intervals.
+         * 
+         * @since   1.1.0
+         * @param   array   $intervals   The exclusion intervals.
+         */
+        $intervals = apply_filters( 'builtpass_exclusion_intervals', $intervals );
+
+        // Return.
+        return $intervals;
     }
 
     /**

@@ -63,15 +63,14 @@
 }
 
 .builtpass-field label {
-    min-width: 100px;
+    min-width: 9em;
     color: #fff;
     font-weight: bold;
 }
 
 .builtpass-field textarea {
-    width: calc(100% - 115px);
+    flex: 1;
     height: 100px !important;
-    margin-left: 15px;
 }
 
 .builtpass-field {
@@ -81,17 +80,24 @@
     color: #fff;
 }
 
+.builtpass-field .description {
+    flex: 1 0 100%;
+    margin: 0;
+}
+
 .builtpass-field.builtpass-field-submit {
     border: none;
     padding: 0;
     margin: 0;
     display: inline-block;
 }
+.builtpass-field-submit + .builtpass-field-submit {
+    margin-left: 1em;
+}
 
 .builtpass-checkbox-field {
     padding: 5px 10px;
     background: #d4121f;
-    margin: 0 5px 0 0;
     border-radius: 4px;
 }
 
@@ -138,7 +144,7 @@
 
 .builtpass-bulk-reset {
     display: grid;
-    grid: auto-flow dense / 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
     padding: 6px 6px;
     border-bottom: 1px solid rgb(0 0 0 / 20%);
 }

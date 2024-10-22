@@ -71,4 +71,35 @@ class builtpassHelper {
 
     }
 
+    /**
+     * Convert interval to datetime.
+     * 
+     * @param string $interval - The interval to convert.
+     * 
+     * @return int - The datetime.
+     * 
+     * @since   1.1.0
+     */
+    public static function convert_interval_to_datetime( $interval ) {
+        $current_time = time();
+
+        // Define the regex patterns for different units.
+        $patterns = array(
+            'months' => '/(\d+)\s*months?/',
+            'years'  => '/(\d+)\s*years?/',
+            'days'   => '/(\d+)\s*days?/',
+        );
+
+        // Check and convert each unit.
+        foreach ( $patterns as $unit => $pattern ) :
+            if ( preg_match( $pattern, str_replace('_', ' ', $interval), $matches ) ) :
+                $value          = (int) $matches[1];
+                $converted_time = strtotime( "$value $unit", $current_time );
+            endif;
+        endforeach;
+
+        return $converted_time;
+    }
+
+
 }

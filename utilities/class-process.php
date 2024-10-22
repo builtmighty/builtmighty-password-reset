@@ -284,6 +284,7 @@ class builtpassProcess {
 
         // Update user meta.
         update_user_meta( $post['user_id'], '_builtpass_reset', time() );
+        update_user_meta( $post['user_id'], '_builtpass_bulk_reset', time() );
 
         // Expire key.
         $keys->expire( $post['user_id'] );

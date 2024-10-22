@@ -127,6 +127,14 @@ function custom_builtpass_password_reset_body( $body, $user_id ) {
     // Filter the body, with access to the user ID.
 
 }
+
+```
+
+## 1.1.0
+
+* Add Exclusion Interval.
+   * If a user has reset their password within this interval, they will not be required to reset their password again. This is useful to avoid prompting users to reset their password too frequently.
+
 ```
 
 ## 1.0.0
