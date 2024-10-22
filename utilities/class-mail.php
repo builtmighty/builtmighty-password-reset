@@ -5,8 +5,6 @@
  * @since   1.0.0
  * @author  Built Mighty
  */
-// Define HTML headers.
-define( 'HTML_EMAIL_HEADERS', [ 'Content-Type: text/html; charset=UTF-8' ] );
 class builtpassMail {
     
     /**
@@ -40,10 +38,10 @@ class builtpassMail {
         $wc_email = new WC_Email;
 
         // Style the wrapped message with woocommerce inline styles
-        $html_message = $wc_email->style_inline($wrapped_message);
+        $html_message = $wc_email->style_inline( $wrapped_message );
 
         // Send the email using wordpress mail function
-        wp_mail( $email, $subject, $html_message, HTML_EMAIL_HEADERS, $attachment );
+        wp_mail( $email, $subject, $html_message, $this->headers, $attachment );
 
     }
 

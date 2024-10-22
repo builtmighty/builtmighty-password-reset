@@ -20,6 +20,8 @@ This plugin includes both a timed password reset and a bulk password reset. The 
 == Screenshots ==
 
 == Changelog ==
+= 1.1.0 =
+* Add Exclusion Interval.
 
 = 1.0.0 =
 * Initial launch

@@ -149,6 +149,36 @@ class builtpassPublic {
 
     }
 
+    /**
+     * Check if user is excluded.
+     * 
+     * @param WP_User $user - The user object.
+     * 
+     * @return bool - True if user is excluded, false if not.
+     * 
+     * @since   1.1.0
+     */
+    private function is_user_excluded( $user ) {
+        // Get exclusion interval from options.
+        $exclusion_interval = get_option( 'builtpass_bulk_exclusion_interval', 'none' );
+        $user_registered    = strtotime( $user->user_registered );
+
+        // Check if the exclusion interval is set and valid.
+        if ( $exclusion_interval !== 'none' ) :
+            $converted_interval = builtpassHelper::convert_interval_to_datetime( $exclusion_interval );
+
+            // Set the cutoff time.
+            // The interval is converted to a negative number because we are checking if the user registered in the PAST X days, months, years.
+            $cutoff_time = - $converted_interval;
+
+            // Check if the user is excluded.
+            if ( $user_registered > $cutoff_time )
+                return true;
+        endif;
+
+        return false;
+    }
+
     /** 
      * Check for bulk reset.
      * 
@@ -169,6 +199,13 @@ class builtpassPublic {
 
         // Check for valid meta.
         if( empty( get_user_meta( $user->ID, '_builtpass_bulk_reset', true ) ) ) return true;
+
+        $is_user_excluded = $this->is_user_excluded( $user );
+
+        // Check exclusion interval.
+        // if ( $this->is_user_excluded( $user ) )
+        if ( $is_user_excluded )
+            return false;
 
         // Set matching role time.
         $role   = array_intersect( (array)$user->roles, (array)$valid_roles );
