@@ -59,8 +59,8 @@ class builtpassPublic {
         if( ( 
             is_admin() && 
             current_user_can( 'edit_users' ) ) && 
-            isset( $_POST['pass1'] ) &&
-            isset( $_POST['pass2'] ) &&
+            isset( $_POST['pass1'] ) && ( $_POST['pass1'] ) && 
+            isset( $_POST['pass2'] ) && ( $_POST['pass2'] ) && 
             ( $_POST['pass1'] == $_POST['pass2'] )
         ) {
 
