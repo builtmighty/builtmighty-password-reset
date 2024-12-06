@@ -109,6 +109,7 @@ class builtpassPlugin {
 
         // Add actions.
         $this->loader->add_action( 'user_register', $public, 'set_key', 10, 1 );
+        $this->loader->add_action( 'profile_update', $public, 'set_key_on_profile_update', 10, 1 );
         $this->loader->add_action( 'wp_login', $public, 'login_reset', 10, 2 );
         $this->loader->add_action( 'init', $public, 'redirect_timed_reset' );
         $this->loader->add_action( 'wp_logout', $public, 'logout' );
