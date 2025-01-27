@@ -45,7 +45,28 @@ class builtpassPublic {
         // Set.
         update_user_meta( $user_id, '_builtpass_bulk_reset', time() );
         update_user_meta( $user_id, '_builtpass_reset', time() );
+    }
+    
+    /**
+     * 
+     * Allow admin password update to set key on profile update, only when password has been changed.
+     * 
+     * @hook profile_update
+     */
+    public function set_key_on_profile_update( $profile_id ) {
 
+        // Validate password fields were filed and correct, valid admin access, and validate access from the admin page set
+        if( ( 
+            is_admin() && 
+            current_user_can( 'edit_users' ) ) && 
+            isset( $_POST['pass1'] ) && ( $_POST['pass1'] ) && 
+            isset( $_POST['pass2'] ) && ( $_POST['pass2'] ) && 
+            ( $_POST['pass1'] == $_POST['pass2'] )
+        ) {
+
+            // Admin is updating a users password. Update their last-updated timestamp.
+            $this->set_key( $profile_id );
+        }
     }
 
     /**
