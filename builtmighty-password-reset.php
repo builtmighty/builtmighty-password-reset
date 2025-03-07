@@ -3,7 +3,7 @@
 Plugin Name: 🔑 Built Mighty Password Reset
 Plugin URI: https://builtmighty.com
 Description: Require users to reset their password on login or set a bulk reset for a specific user role.
-Version: 1.1.0
+Version: 1.2.1
 Author: Built Mighty
 Author URI: https://builtmighty.com
 Copyright: Built Mighty
