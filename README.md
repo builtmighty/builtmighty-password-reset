@@ -129,6 +129,15 @@ function custom_builtpass_password_reset_body( $body, $user_id ) {
 }
 
 ```
+## 1.2.1
+
+* Validate condition check for password reset page in enqueue method
+
+## 1.2.0
+
+* Update the password reset exception to apply the same rule to passwords created by admins in the admin users panel 
+
+```
 
 ## 1.1.0
 

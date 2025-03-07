@@ -542,12 +542,16 @@ class builtpassPrivate {
     /**
      * Enqueue.
      * 
-     * @since   1.0.0
+     * @since    1.0.0
+     * @modified 1.2.1
      */
     public function enqueue() {
 
         // Load on admin.
-        if( $_GET['page'] == 'builtpass-password-reset' ) {
+        if(
+            isset( $_GET['page'] ) &&
+            $_GET['page'] == 'builtpass-password-reset'
+        ) {
 
             // CSS.
             wp_enqueue_style( 'builtpass-admin', BUILTPASS_URI . 'private/assets/css/admin.css', [], BUILTPASS_VERSION );

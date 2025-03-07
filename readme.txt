@@ -20,6 +20,12 @@ This plugin includes both a timed password reset and a bulk password reset. The 
 == Screenshots ==
 
 == Changelog ==
+= 1.2.1 =
+* Validate condition check for password reset page in enqueue method
+
+= 1.2.0 =
+* Update the password reset exception to apply the same rule to passwords created by admins in the admin users panel 
+
 = 1.1.0 =
 * Add Exclusion Interval.
 
