@@ -45,19 +45,36 @@ get_header();
 // Before external.
 do_action( 'builtpass_before_external', $_GET['user'] );
 
-// Reset form. ?>
-<div class="woocommerce-form woocommerce-form-reset reset">
-    <div class="built-password-reset">
-        <form id="built-password-reset-form" method="post">
-            <input type="hidden" name="action" value="builtpass_reset_password">
-            <input type="hidden" name="user_id" value="<?php echo $_GET['user']; ?>">
-            <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( 'builtpass_reset_password' ); ?>">
-            <input type="password" name="password" placeholder="New password">
-            <input type="password" name="confirm_password" placeholder="Confirm new password">
-            <button type="submit">Reset password</button>
-        </form>
+$reset_password_template = 'myaccount/form-reset-password.php';
+
+// Check if WooCommerce Template Exists.
+if (
+    function_exists( 'wc_locate_template' ) &&
+    wc_locate_template( $reset_password_template )
+) {
+    // Get WooCommerce Reset Password Form
+    wc_get_template( $reset_password_template, [
+        'user'  => $_GET['user'],
+        'key'   => $_GET['key'],
+        'login' => $keys->get_login( $_GET['user'] ),
+    ]);
+} else {
+    // Reset form.
+    ?>
+    <div class="woocommerce-form woocommerce-form-reset reset">
+        <div class="built-password-reset">
+            <form id="built-password-reset-form" method="post">
+                <input type="hidden" name="action" value="builtpass_reset_password">
+                <input type="hidden" name="user_id" value="<?php echo $_GET['user']; ?>">
+                <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( 'builtpass_reset_password' ); ?>">
+                <input type="password" name="password" placeholder="New password">
+                <input type="password" name="confirm_password" placeholder="Confirm new password">
+                <button type="submit">Reset password</button>
+            </form>
+        </div>
     </div>
-</div><?php
+    <?php
+}
 
 // After external.
 do_action( 'builtpass_after_external', $_GET['user'] );
