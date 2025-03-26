@@ -322,4 +322,27 @@ class builtpassPublic {
 
     }
 
+    /**
+     * Handle WooCommerce reset password success.
+     * 
+     * @param WP_User $user The user object.
+     * 
+     * @return void
+     * 
+     * @since 1.3.0
+     * 
+     * @hook - action - woocommerce_customer_reset_password
+     */
+    public function handle_woocommerce_reset_password( $user ) {
+        // Prepare the data to mimic the builtpassProcess->run method.
+        $post = [
+            'user_id'  => $user->ID,
+            'password' => $user->user_pass, // The password is already set by WooCommerce.
+        ];
+
+        // Call save_password to update user meta and expire keys.
+        $process = new builtpassProcess();
+        $process->save_password( $post );
+    }
+
 }

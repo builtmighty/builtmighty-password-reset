@@ -226,7 +226,7 @@ class builtpassPrivate {
                     if( isset( $data[ $key ] ) ) {
 
                         // Update.
-                        update_option( $key, $data[ $key ] );
+                        update_option( $key, sanitize_textarea_field( $data[ $key ] ) );
 
                     } else {
 
@@ -347,7 +347,7 @@ class builtpassPrivate {
             } elseif( $field['type'] == 'textarea' ) {
 
                 // Output textarea. ?>
-                <textarea name="<?php echo $key; ?>" id="<?php echo $key; ?>"><?php echo $value; ?></textarea><?php
+                <textarea name="<?php echo $key; ?>" id="<?php echo $key; ?>"><?php echo esc_textarea( wp_unslash( $value ) ); ?></textarea><?php
             
             } elseif( $field['type'] == 'submit' ) {
 
