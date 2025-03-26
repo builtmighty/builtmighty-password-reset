@@ -131,6 +131,11 @@ function custom_builtpass_password_reset_body( $body, $user_id ) {
 ```
 ## 1.3.0
 
+* Added Block UI for password reset form on submit.
+* Fixed Bug where Password would save wrong on password reset.
+
+## 1.3.0
+
 * Update Key creation and validation to use WP Form Reset Keys.
 * Update Forms to use WC Password Reset Form if template found.
 * Fixed bug where Sanitized characters would remain in output for notices.
