@@ -1,5 +1,5 @@
 === Built Mighty Password Reset ===
-Contributors: tylerjohnsondesign
+Contributors: tylerjohnsondesign, radams-builtmighty
 Donate link: https://builtmighty.com
 Tags: passwords, users, reset
 Requires at least: 6.0
@@ -20,6 +20,10 @@ This plugin includes both a timed password reset and a bulk password reset. The 
 == Screenshots ==
 
 == Changelog ==
+= 1.4.0 =
+* Added Block UI for password reset form on submit.
+* Fixed Bug where Password would save wrong on password reset.
+
 = 1.3.0 =
 * Update Key creation and validation to use WP Form Reset Keys.
 * Update Forms to use WC Password Reset Form if template found.

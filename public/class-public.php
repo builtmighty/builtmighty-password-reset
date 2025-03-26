@@ -34,6 +34,38 @@ class builtpassPublic {
     }
 
     /**
+     * Cache Bust
+     * 
+     * @param string $file - The file to cache bust.
+     * 
+     * @return string $version- The version of the file.
+     * 
+     * @since   1.4.0
+     */
+    public function cache_bust_version( $file ) {
+        $version = file_exists( $file ) ?
+            $this->plugin_version . '.' . strval( filemtime( $file ) ) :
+            $this->plugin_version;
+        return $version;
+    }
+
+    /**
+     * Enqueue scripts.
+     * 
+     * @return void
+     * 
+     * @since   1.4.0
+     * 
+     * @hook - action - wp_enqueue_scripts
+     */
+    public function enqueue_scripts() {
+        // Scripts.
+        $main_script_file = 'public/assets/js/builtpass-main.js';
+        // We will enqueue this later if/when necessary.
+        wp_register_script( 'builtpass-main-js', BUILTPASS_URI . $main_script_file, array( 'jquery' ), $this->cache_bust_version( BUILTPASS_PATH . $main_script_file ), true );
+    }
+
+    /**
      * On user creation.
      * 
      * Set the required key on user creation, so they aren't prompted to reset.
