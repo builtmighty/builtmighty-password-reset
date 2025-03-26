@@ -289,8 +289,9 @@ class builtpassProcess {
         // Expire key.
         $keys->expire( $post['user_id'] );
 
-        // Update the users password.
-        wp_set_password( $post['password'], $post['user_id'] );
+        // Update the users password if the action has not been triggered by the WooCommerce reset password form.
+        if ( ! did_action('woocommerce_customer_reset_password') )
+            wp_set_password( $post['password'], $post['user_id'] );
 
         // Clear the user cache.
         wp_cache_delete( $post['user_id'], 'users' );
