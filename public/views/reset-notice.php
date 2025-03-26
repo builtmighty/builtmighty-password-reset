@@ -45,7 +45,7 @@ if( ! empty( get_option( 'builtpass_bulk_page' ) ) ) {
 
     // Output. ?>
     <div class="builtpass-notice-content">
-        <?php echo wpautop( get_option( 'builtpass_bulk_page' ) ); ?>
+        <?php echo wpautop( wp_unslash(  get_option( 'builtpass_bulk_page' ) ) ); ?>
     </div><?php 
 
 }
