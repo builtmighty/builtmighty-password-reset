@@ -10,6 +10,9 @@ get_header();
 $process = new builtpassProcess();
 $process->run( $post, [ 'message' => '', 'redirect' => true ] );
 
+// Enqueue Main Script.
+wp_enqueue_script( 'builtpass-main-js' );
+
 // Before internal.
 do_action( 'builtpass_before_internal', get_current_user_id() );
 
