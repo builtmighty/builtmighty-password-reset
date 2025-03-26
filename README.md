@@ -129,6 +129,12 @@ function custom_builtpass_password_reset_body( $body, $user_id ) {
 }
 
 ```
+## 1.3.0
+
+* Update Key creation and validation to use WP Form Reset Keys.
+* Update Forms to use WC Password Reset Form if template found.
+* Fixed bug where Sanitized characters would remain in output for notices.
+
 ## 1.2.1
 
 * Validate condition check for password reset page in enqueue method
