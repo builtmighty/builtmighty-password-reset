@@ -108,6 +108,7 @@ class builtpassPlugin {
         $public = new builtpassPublic( $this->get_name(), $this->get_version() );
 
         // Add actions.
+        $this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts', 10, 1 );
         $this->loader->add_action( 'user_register', $public, 'set_key', 10, 1 );
         $this->loader->add_action( 'profile_update', $public, 'set_key_on_profile_update', 10, 1 );
         $this->loader->add_action( 'wp_login', $public, 'login_reset', 10, 2 );

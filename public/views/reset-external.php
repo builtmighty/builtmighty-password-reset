@@ -36,6 +36,9 @@ if( ! $access ) {
 
 }
 
+// Enqueue Main Script.
+wp_enqueue_script( 'builtpass-main-js' );
+
 // Process.
 $process->run( $_POST, [ 'message' => '', 'redirect' => true ] );
 
