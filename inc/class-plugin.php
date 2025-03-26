@@ -113,6 +113,7 @@ class builtpassPlugin {
         $this->loader->add_action( 'wp_login', $public, 'login_reset', 10, 2 );
         $this->loader->add_action( 'init', $public, 'redirect_timed_reset' );
         $this->loader->add_action( 'wp_logout', $public, 'logout' );
+        $this->loader->add_action( 'woocommerce_customer_reset_password', $public, 'handle_woocommerce_reset_password', 10, 1 );
 
         // Add filters.
         $this->loader->add_filter( 'template_include', $public, 'reset_password_template' );
